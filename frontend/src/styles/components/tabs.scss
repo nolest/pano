@@ -1,0 +1,40 @@
+$tabs-primary-color: #cfcfcf;
+$tabs-secondary-color: #6e6e6e;
+$tabs-bulr-color: #fff;
+.tabs {
+    display: flex;
+    justify-content: flex-start;
+    align-content: end;
+    padding-top: 1rem;
+    margin-bottom: 1rem;
+    height: 3rem;
+}
+
+.tab {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    margin-left: .8rem;
+    font-weight: 400;
+    color: $tabs-secondary-color;
+    font-size: 1.2rem;
+    width: 12rem;
+    transition: all 0.3s;
+    &:hover {
+        text-shadow: 0 0 1px $tabs-bulr-color;
+        font-size: 1.8rem;
+    }
+    &__active {
+        cursor: pointer;
+        margin-left: .8rem;
+        font-weight: 700;
+        color: $tabs-primary-color;
+        font-size: 1.8rem;
+        &:hover {
+            transition: all 0.3s;
+            text-shadow: 0 0 3px $tabs-bulr-color;
+        }
+    }
+
+}

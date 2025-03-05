@@ -1,25 +1,10 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.scss'
-import { BrowserRouter, Routes, Route } from "react-router"
-
-import Snails from './pages/snails/Snails.tsx'
-import Donut from './pages/donut/Donut.tsx'
-import Tabs from './components/tabs/tabs.tsx'
+import App from './App'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <BrowserRouter>
-      <Tabs />
-      <Routes>
-        <Route path="/" element={<Donut />} />
-      </Routes>
-      <Routes>
-        <Route path="/donut" element={<Donut />} />
-      </Routes>
-      <Routes>
-        <Route path="/snails" element={<Snails />} />
-      </Routes>
-    </BrowserRouter>
+    <App />
   </StrictMode>,
 )
