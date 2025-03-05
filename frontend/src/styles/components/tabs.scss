@@ -12,7 +12,7 @@ $tabs-bulr-color: #fff;
 
 .tab {
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     cursor: pointer;
     margin-left: .8rem;
@@ -21,9 +21,24 @@ $tabs-bulr-color: #fff;
     font-size: 1.2rem;
     width: 12rem;
     transition: all 0.3s;
+    position: relative;
+    padding-left: .5rem;
+    text-decoration: none;
     &:hover {
         text-shadow: 0 0 1px $tabs-bulr-color;
         font-size: 1.8rem;
+    }
+    &::before {
+        content: '';
+        display: block;
+        width: 3px;
+        height: 1rem;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        background-color: $tabs-secondary-color;
+        z-index: 1;
+        transition: all 0.3s;
     }
     &__active {
         cursor: pointer;
@@ -34,6 +49,18 @@ $tabs-bulr-color: #fff;
         &:hover {
             transition: all 0.3s;
             text-shadow: 0 0 3px $tabs-bulr-color;
+        }
+        &::before {
+            content: '';
+            display: block;
+            width: 1rem;
+            height: 3px;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            background-color: $tabs-primary-color;
+            z-index: 1;
+            transition: all 0.3s;
         }
     }
 

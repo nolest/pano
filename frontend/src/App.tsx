@@ -1,9 +1,11 @@
 import { useState } from 'react'
 import './App.scss'
 import { BrowserRouter, Routes, Route } from "react-router"
-import Snails from './pages/snails/Snails.tsx'
 import Donut from './pages/donut/Donut.tsx'
+import Scenes from './pages/scenes/Scenes.tsx'
+import Snails from './pages/snails/Snails.tsx'
 import Tabs from './components/tabs/tabs.tsx'
+
 
 function App() {
   const [tabindex, setCount] = useState(0)
@@ -11,14 +13,11 @@ function App() {
   return (
     <>
       <BrowserRouter>
-        <Tabs curIndex={ tabindex}/>
+        <Tabs curIndex={tabindex} />
         <Routes>
           <Route path="/" element={<Donut />} />
-        </Routes>
-        <Routes>
           <Route path="/donut" element={<Donut />} />
-        </Routes>
-        <Routes>
+          <Route path="/scenes" element={<Scenes />} />
           <Route path="/snails" element={<Snails />} />
         </Routes>
       </BrowserRouter>
