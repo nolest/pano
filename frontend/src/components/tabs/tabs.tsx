@@ -8,7 +8,12 @@ type Props = {
 
 const Tabs = ({ curIndex } : Props) => {
   const [tabindex, setCount] = useState(curIndex)
-  const tabList = [{ id: 0, name: 'donut', link: 'donut' }, { id: 1, name: 'scenes', link: 'scenes' }, { id: 2, name: 'snails of life', link: 'snails' }]
+  const tabList = [
+    { id: 0, name: 'donut', link: 'donut' }, 
+    { id: 1, name: 'scenes', link: 'scenes' }, 
+    { id: 2, name: 'snails of life', link: 'snails' },
+    { id: 3, name: 'giant', link: 'giant' }
+  ]
   
   const textStyle = (index: number) => {
     return tabindex === index ? { textTransform: 'capitalize' as const } : { textTransform: 'none' as const }

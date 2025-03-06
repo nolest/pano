@@ -1,0 +1,35 @@
+.donut{
+    margin-left: 5rem;
+    margin-right: 5rem;
+}
+.chapter{
+    font-size: 1.5rem;
+    font-style: italic;
+    color: #fff;
+    //filter: invert(1);
+    &__phase {
+        font-size: 1.2rem;
+        margin-bottom: 1rem;
+    }
+    &__content {
+        margin-right: 1rem;
+        border-top: 1px dashed #fff;
+    }
+    &__imgs {
+        flex-wrap: wrap;
+    }
+    &__imgbox {
+        width: 33%;
+        margin-right: .33%;
+        min-width: 200px;
+    }
+    &__img {
+        width: 100%;
+        object-fit: cover;
+    }
+    &__imginfo {
+        text-align: center;
+        opacity: 0.6;
+        font-size: 0.8rem;
+    }
+}
