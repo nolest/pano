@@ -25,6 +25,9 @@ const Tabs = ({ curIndex }: Props) => {
     if (currentTab) {
       setCount(currentTab.id);
     }
+    else {
+      setCount(0);
+    }
   }, [location.pathname, tabList]);
 
 
