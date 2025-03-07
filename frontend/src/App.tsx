@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import './App.scss'
-import { BrowserRouter, Routes, Route } from "react-router"
+import { BrowserRouter, Routes, Route, Navigate } from "react-router"
 import Donut from './pages/donut/Donut.tsx'
 import Scenes from './pages/scenes/Scenes.tsx'
 import Snails from './pages/snails/Snails.tsx'
@@ -23,6 +23,7 @@ function App() {
           <Route path="/snails" element={<Snails />} />
           <Route path="/giant" element={<Giant />} />
           <Route path="/archi" element={<Archi />} />
+          <Route path="*" element={<Navigate to="/donut" replace />} />
         </Routes>
       </BrowserRouter>
     </>
