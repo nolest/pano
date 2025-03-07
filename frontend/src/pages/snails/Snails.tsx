@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import '@/styles/snails/snails.scss'
 
 function Snails() {

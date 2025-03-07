@@ -1,9 +1,8 @@
 import { useRef, useEffect } from 'react'
 import '@/styles/donut/donut.scss'
 import * as THREE from 'three'
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { GLTFLoader, GLTF } from 'three/examples/jsm/loaders/GLTFLoader.js';
-import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader';
+import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
 
 function Donut() {
   const canvasRef = useRef(null);
@@ -17,7 +16,6 @@ function Donut() {
     const canEle = document.getElementById('maincanvas');
     canEle && canEle.appendChild( renderer.domElement );
 
-    const controls = new OrbitControls( camera, renderer.domElement );
     const loader = new GLTFLoader();
 
     const dracoLoader = new DRACOLoader();

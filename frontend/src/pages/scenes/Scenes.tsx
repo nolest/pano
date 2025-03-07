@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import '@/styles/scenes/scenes.scss'
 
 function Scenes() {
@@ -13,7 +12,7 @@ function Scenes() {
       </div>
       <div className="">
         <iframe id="oceanID" src="//player.bilibili.com/player.html?aid=623341226&bvid=BV11t4y1Z7L3&cid=1393213234&p=1" scrolling="no"
-          border="0" frameBorder="no" framespacing="0" allowFullScreen width="100%" height="500"> </iframe>
+          frameBorder="no" allowFullScreen width="100%" height="500"> </iframe>
       </div>
     </>
   )

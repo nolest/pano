@@ -27,9 +27,6 @@ const Tabs = ({ curIndex }: Props) => {
     }
   }, [location.pathname, tabList]);
 
-  const textStyle = (index: number) => {
-    return tabindex === index ? { textTransform: 'capitalize' as const } : { textTransform: 'none' as const }
-  }
 
   return (
     <>

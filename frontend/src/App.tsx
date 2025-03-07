@@ -9,7 +9,7 @@ import Giant from './pages/giant/Giant.tsx'
 import Visual from './pages/visual/Visual.tsx'
 import Archi from './pages/archi/Archi.tsx'
 function App() {
-  const [tabindex, setCount] = useState(0)
+  const [tabindex] = useState(0)
 
   return (
     <>
