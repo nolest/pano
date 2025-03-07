@@ -1,0 +1,47 @@
+.archi {
+    width: 100%;
+}
+
+.archi-app-container {
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem;
+    width: 33%;
+    flex-wrap: wrap;
+    min-width: 200px;
+  
+    .archi-layer {
+      border: 2px solid #333;
+      border-radius: 8px;
+      padding: 0.3rem;
+      text-align: center;
+      
+      &.ui-layer { background: #f0f4ff; }
+      &.bloc-layer { background: #fff0f5; }
+      &.repository-layer { background: #f5f5f5; }
+      &.data-layer { background: #e6ffe6; }
+
+      &.ui-layer { background: #f0f4ff; }
+      &.viewmodel-layer { background: #fff0f5; }
+      &.model-layer { background: #f5f5f5; }
+      &.data-sources-layer { background: #e6ffe6; }
+        
+      &.v-layer { background: #f0f4ff; }
+      &.c-layer { background: #fff0f5; }
+      &.m-layer { background: #f5f5f5; }
+      &.data-sources-layer { background: #e6ffe6; }
+    }
+  
+    .data-flow {
+      margin: .5rem 0;
+      padding: 0.5rem;
+      border-top: 1px dashed #666;
+      border-bottom: 1px dashed #666;
+      
+      &.arrow-bidirectional::before {
+        content: '↕';
+        font-size: 1.2em;
+      }
+    }
+  }

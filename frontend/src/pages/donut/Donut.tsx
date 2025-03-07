@@ -174,10 +174,16 @@ function Donut() {
         </div>
       </div>
       <div className="ds-flex">
-        <div id="maincanvas" ref={canvasRef}></div>
-        <video loop width="360" height="480" controls autoPlay muted>
-          <source src="/video/donate.mp4" type="video/mp4" />
-        </video>
+        <div className="ds-flex flex-column ">
+            <span>鼠标/手势可以拖拽，缩放可以穿模，低模</span>
+            <div id="maincanvas" ref={canvasRef}></div>
+        </div>
+        <div className="ds-flex flex-column ">
+            <span>Blender导出影片，高模</span>
+            <video loop width="360" height="480" controls autoPlay muted>
+                <source src="/video/donate.mp4" type="video/mp4" />
+            </video>
+        </div>
       </div>
     </>
   )

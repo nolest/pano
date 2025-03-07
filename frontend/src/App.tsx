@@ -6,7 +6,8 @@ import Scenes from './pages/scenes/Scenes.tsx'
 import Snails from './pages/snails/Snails.tsx'
 import Tabs from './components/tabs/tabs.tsx'
 import Giant from './pages/giant/Giant.tsx'
-
+import Visual from './pages/visual/Visual.tsx'
+import Archi from './pages/archi/Archi.tsx'
 function App() {
   const [tabindex, setCount] = useState(0)
 
@@ -17,9 +18,11 @@ function App() {
         <Routes>
           <Route path="/" element={<Donut />} />
           <Route path="/donut" element={<Donut />} />
+          <Route path="/visual" element={<Visual />} />
           <Route path="/scenes" element={<Scenes />} />
           <Route path="/snails" element={<Snails />} />
           <Route path="/giant" element={<Giant />} />
+          <Route path="/archi" element={<Archi />} />
         </Routes>
       </BrowserRouter>
     </>
