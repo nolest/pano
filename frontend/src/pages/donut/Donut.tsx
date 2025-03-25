@@ -3,6 +3,7 @@ import '@/styles/donut/donut.scss'
 import * as THREE from 'three'
 import { GLTFLoader, GLTF } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
 function Donut() {
   const canvasRef = useRef(null);
@@ -16,6 +17,7 @@ function Donut() {
     const canEle = document.getElementById('maincanvas');
     canEle && canEle.appendChild( renderer.domElement );
 
+    new OrbitControls( camera, renderer.domElement );
     const loader = new GLTFLoader();
 
     const dracoLoader = new DRACOLoader();

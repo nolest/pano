@@ -16,7 +16,7 @@ const Tabs = ({ curIndex }: Props) => {
     { id: 2, name: 'scenes', link: 'scenes' }, 
     { id: 3, name: 'snails', link: 'snails' },
     { id: 4, name: 'archi', link: 'archi' },
-    { id: 5, name: 'giant', link: 'giant' },
+    //{ id: 5, name: 'giant', link: 'giant' },
   ];
 
   useEffect(() => {
