@@ -36,7 +36,8 @@ function Cylinder() {
 
         // 创建多个圆柱体
         const cylinderRadius = 25
-        const cylinderGeometry = new THREE.CylinderGeometry(cylinderRadius, cylinderRadius, 100, 32)
+        const cylinderHeight = 100
+        const cylinderGeometry = new THREE.CylinderGeometry(cylinderRadius, cylinderRadius, cylinderHeight, 32)
         
         // 移除通用材质
         // const material = new THREE.MeshNormalMaterial()
@@ -70,6 +71,14 @@ function Cylinder() {
         const cols = Math.ceil((endX - startX) / horizontalSpacing);
         const rows = Math.ceil((endY - startY) / verticalSpacing);
         
+        // 为鼠标交互准备
+        const raycaster = new THREE.Raycaster();
+        const mouse = new THREE.Vector2();
+        let intersectedObject: THREE.Object3D | null = null;
+        const cylinders: THREE.Mesh[] = [];
+        const originalScales: {[key: string]: number} = {};
+        const cylinderPositions: {[key: string]: THREE.Vector2} = {}; // 存储每个圆柱体的位置
+        
         // 创建六边形排列的圆柱体
         for (let row = 0; row < rows; row++) {
             // 每隔一行，水平位置偏移半个直径
@@ -98,6 +107,13 @@ function Cylinder() {
                     
                     cylinder.rotation.x = 0.5 * Math.PI;
                     
+                    // 为每个圆柱体存储原始缩放值
+                    const uuid = cylinder.uuid;
+                    originalScales[uuid] = 1.0;
+                    // 存储位置信息
+                    cylinderPositions[uuid] = new THREE.Vector2(x, y);
+                    
+                    cylinders.push(cylinder);
                     scene.add(cylinder);
                 }
             }
@@ -152,13 +168,184 @@ function Cylinder() {
         pointLight.position.set(0, 0, 300)
         scene.add(pointLight)
 
-        // 渲染循环
-        const animate = () => {
-            requestAnimationFrame(animate)
-            controls.update()
-            renderer.render(scene, camera)
+        // 处理鼠标移动
+        function onMouseMove(event: MouseEvent) {
+            // 计算鼠标在归一化设备坐标中的位置
+            // (-1 到 +1)
+            mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+            mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
         }
-        animate()
+
+        // 添加鼠标移动事件监听器
+        window.addEventListener('mousemove', onMouseMove, false);
+
+        // 寻找指定圆柱体周围的6个相邻圆柱体
+        function findNeighborCylinders(targetCylinder: THREE.Object3D): THREE.Object3D[] {
+            const neighbors: THREE.Object3D[] = [];
+            const targetPosition = cylinderPositions[targetCylinder.uuid];
+            if (!targetPosition) return neighbors;
+            
+            const row = Math.round((targetPosition.y - startY) / verticalSpacing);
+            const isOddRow = row % 2 === 1;
+            
+            // 计算六个方向的相邻位置
+            const neighborOffsets = [
+                // 右上, 左上
+                {x: isOddRow ? horizontalSpacing / 2 : -horizontalSpacing / 2, y: verticalSpacing},
+                {x: isOddRow ? horizontalSpacing * 1.5 : horizontalSpacing / 2, y: verticalSpacing},
+                // 右, 左
+                {x: horizontalSpacing, y: 0},
+                {x: -horizontalSpacing, y: 0},
+                // 右下, 左下
+                {x: isOddRow ? horizontalSpacing / 2 : -horizontalSpacing / 2, y: -verticalSpacing},
+                {x: isOddRow ? horizontalSpacing * 1.5 : horizontalSpacing / 2, y: -verticalSpacing},
+            ];
+            
+            // 找到每个方向上最接近的圆柱体
+            for (const offset of neighborOffsets) {
+                const neighborX = targetPosition.x + offset.x;
+                const neighborY = targetPosition.y + offset.y;
+                
+                // 找到最接近这个位置的圆柱体
+                let closestCylinder: THREE.Object3D | null = null;
+                let minDistance = Number.MAX_VALUE;
+                
+                for (const cylinder of cylinders) {
+                    const cylinderPos = cylinderPositions[cylinder.uuid];
+                    if (!cylinderPos) continue;
+                    
+                    const distance = Math.sqrt(
+                        Math.pow(cylinderPos.x - neighborX, 2) + 
+                        Math.pow(cylinderPos.y - neighborY, 2)
+                    );
+                    
+                    if (distance < minDistance) {
+                        minDistance = distance;
+                        closestCylinder = cylinder;
+                    }
+                }
+                
+                // 如果找到足够近的圆柱体，加入邻居列表
+                if (closestCylinder && minDistance < horizontalSpacing * 1.5) {
+                    neighbors.push(closestCylinder);
+                }
+            }
+            
+            return neighbors;
+        }
+
+        // 当前高亮的圆柱体集合（中心+周围）
+        let highlightedCylinders: THREE.Object3D[] = [];
+
+        // 渲染循环
+        const clock = new THREE.Clock();
+        let animationFrameId: number;
+        
+        const animate = () => {
+            animationFrameId = requestAnimationFrame(animate);
+            
+            // 更新射线投射器
+            raycaster.setFromCamera(mouse, camera);
+            
+            // 检查射线与哪些物体相交
+            const intersects = raycaster.intersectObjects(cylinders);
+            
+            // 如果有相交的物体
+            if (intersects.length > 0) {
+                // 获取第一个相交的物体
+                const firstIntersected = intersects[0].object;
+                
+                // 如果是一个新的相交物体
+                if (intersectedObject !== firstIntersected) {
+                    // 恢复之前所有高亮的圆柱体
+                    highlightedCylinders.forEach(cylinder => {
+                        animateScale(cylinder, 1.0);
+                    });
+                    highlightedCylinders = [];
+                    
+                    // 设置新的中心圆柱体
+                    intersectedObject = firstIntersected;
+                    
+                    // 找到周围的6个圆柱体
+                    const neighbors = findNeighborCylinders(intersectedObject);
+                    
+                    // 高亮中心圆柱体和周围圆柱体
+                    highlightedCylinders = [intersectedObject, ...neighbors];
+                    highlightedCylinders.forEach(cylinder => {
+                        animateScale(cylinder, 1.8);
+                    });
+                }
+            } else {
+                // 如果没有相交的物体，但之前有相交物体
+                if (intersectedObject) {
+                    // 恢复所有高亮的圆柱体
+                    highlightedCylinders.forEach(cylinder => {
+                        animateScale(cylinder, 1.0);
+                    });
+                    highlightedCylinders = [];
+                    intersectedObject = null;
+                }
+            }
+            
+            // 更新缩放动画
+            const delta = clock.getDelta();
+            updateAnimations(delta);
+            
+            controls.update();
+            renderer.render(scene, camera);
+        }
+        
+        // 保存动画状态
+        const animations: {
+            object: THREE.Object3D;
+            targetScale: number;
+            currentScale: number;
+            speed: number;
+        }[] = [];
+        
+        // 添加缩放动画
+        function animateScale(object: THREE.Object3D, targetScale: number) {
+            // 查找是否已存在该对象的动画
+            const existingAnimation = animations.find(a => a.object === object);
+            
+            if (existingAnimation) {
+                // 更新现有动画的目标缩放
+                existingAnimation.targetScale = targetScale;
+            } else {
+                // 创建新的动画
+                animations.push({
+                    object,
+                    targetScale,
+                    currentScale: originalScales[object.uuid] || 1.0,
+                    speed: 1.0 / 0.3 // 0.3秒完成动画
+                });
+            }
+        }
+        
+        // 更新所有动画
+        function updateAnimations(deltaTime: number) {
+            for (let i = animations.length - 1; i >= 0; i--) {
+                const anim = animations[i];
+                
+                // 计算当前缩放与目标缩放的差距
+                const diff = anim.targetScale - anim.currentScale;
+                
+                if (Math.abs(diff) < 0.001) {
+                    // 动画完成，从列表中移除
+                    animations.splice(i, 1);
+                    anim.object.scale.y = anim.targetScale;
+                } else {
+                    // 更新当前缩放
+                    const step = anim.speed * deltaTime * Math.sign(diff) * Math.min(Math.abs(diff) * 5, 1);
+                    anim.currentScale += step;
+                    
+                    // 应用缩放
+                    anim.object.scale.y = anim.currentScale;
+                }
+            }
+        }
+        
+        animate();
 
         // 窗口大小调整
         const handleResize = () => {
@@ -170,10 +357,40 @@ function Cylinder() {
 
         // 清理函数
         return () => {
-            window.removeEventListener('resize', handleResize)
+            // 取消动画循环
+            cancelAnimationFrame(animationFrameId);
+            
+            // 移除事件监听器
+            window.removeEventListener('resize', handleResize);
+            window.removeEventListener('mousemove', onMouseMove);
+            
+            // 清理Three.js资源
+            scene.clear(); // 清空场景中的所有对象
+            
+            // 释放几何体和材质
+            cylinderGeometry.dispose();
+            cylinders.forEach(cylinder => {
+                if (cylinder.material instanceof THREE.Material) {
+                    cylinder.material.dispose();
+                } else if (Array.isArray(cylinder.material)) {
+                    cylinder.material.forEach(material => material.dispose());
+                }
+            });
+            
+            // 释放渲染器资源
+            renderer.dispose();
+            renderer.forceContextLoss();
+            
+            // 移除DOM元素
             if (containerRef.current) {
-                containerRef.current.removeChild(renderer.domElement)
+                containerRef.current.removeChild(renderer.domElement);
             }
+            
+            // 清空引用
+            highlightedCylinders = [];
+            intersectedObject = null;
+            
+            console.log('Cylinder component cleaned up');
         }
     }, [])
 
