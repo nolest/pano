@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "@p5-wrapper/react": "^4.4.2",
+    "@react-three/drei": "^10.0.6",
+    "@react-three/fiber": "^9.1.2",
     "@reduxjs/toolkit": "^2.7.0",
     "@types/p5": "^1.7.6",
     "@types/three": "^0.174.0",
@@ -20,7 +22,7 @@
     "react-redux": "^9.2.0",
     "react-router": "^7.2.0",
     "redux": "^5.0.1",
-    "three": "^0.174.0"
+    "three": "^0.175.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.21.0",

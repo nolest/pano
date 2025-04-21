@@ -11,7 +11,7 @@ import Cylinder from './pages/cylinder/Cylinder.tsx'
 import { useSelector } from 'react-redux'
 import { RootState } from './store'
 function App() {
-  const [tabindex] = useState(0)
+  const [tabindex] = useState(5)
 
   const tabs = useSelector((state: RootState) => state.tabs?.value) || []
 
