@@ -34,10 +34,11 @@ sudo dockerd
 sudo systemctl start docker
 
 编译image
-进入到前后端目录toServer 执行 docker build -t tota . （注意有个.）
+进入到前后端目录toServer 执行 docker build -t pano . （注意有个.）
 运行docker images 检查镜像
 运行docker ps 检查镜像运行状况
-运行docker run --publish 5000:5000 tota
+运行docker kill [镜像id] 释放端口
+运行docker run --publish 5000:5000 pano
 完成！
 
 有更新的话docker需要重新执行部署流程
