@@ -5,6 +5,7 @@ const tabs = createSlice({
     initialState: {
         value: [
             { id: 5, name: 'cylinder', link: 'cylinder' },
+            { id: 6, name: 'leaflet', link: 'leaflet' },
             { id: 0, name: 'donut', link: 'donut' },
             { id: 1, name: 'visual', link: 'visual' },
             { id: 2, name: 'scenes', link: 'scenes' }, 

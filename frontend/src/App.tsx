@@ -12,6 +12,7 @@ const Snails = lazy(() => import('./pages/snails/Snails.tsx'))
 const Visual = lazy(() => import('./pages/visual/Visual.tsx'))
 const Archi = lazy(() => import('./pages/archi/Archi.tsx'))
 const Cylinder = lazy(() => import('./pages/cylinder/Cylinder.tsx'))
+const Leaflet = lazy(() => import('./pages/leaflet/Leaflet.tsx'))
 
 // 加載中顯示的組件
 const LoadingFallback = () => (
@@ -32,6 +33,7 @@ function App() {
     visual: Visual,
     snails: Snails,
     archi: Archi,
+    leaflet: Leaflet,
     // giant: Giant,
   }
 
